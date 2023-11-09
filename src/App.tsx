@@ -1,5 +1,6 @@
 import Learn1 from "./components/Learn1/Learn1";
 import Learn2 from "./components/Learn2/Learn2";
+import Learn3 from "./components/Learn3/Learn3";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         </h1>
         <Learn1 />
         <Learn2 />
+        <Learn3 />
       </div>
     </>
   );
