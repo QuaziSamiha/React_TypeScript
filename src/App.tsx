@@ -1,6 +1,7 @@
 import Learn1 from "./components/Learn1/Learn1";
 import Learn2 from "./components/Learn2/Learn2";
 import Learn3 from "./components/Learn3/Learn3";
+import Learn4 from "./components/Learn4/Learn4";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Learn1 />
         <Learn2 />
         <Learn3 />
+        <Learn4 />
       </div>
     </>
   );
