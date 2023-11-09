@@ -1,4 +1,5 @@
 import Learn1 from "./components/Learn1/Learn1";
+import Learn2 from "./components/Learn2/Learn2";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
           React TypeScript Learning Project
         </h1>
         <Learn1 />
+        <Learn2 />
       </div>
     </>
   );
