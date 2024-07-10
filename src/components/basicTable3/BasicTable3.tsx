@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useMemo, useState } from "react";
 import staticData from "../../MOCK_DATA.json";
 import {
@@ -6,9 +7,16 @@ import {
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
+	getSortedRowModel,
+	SortingState,
 	useReactTable,
 } from "@tanstack/react-table";
 import { DateTime } from "luxon";
+import {
+	TiArrowSortedDown,
+	TiArrowSortedUp,
+	TiArrowUnsorted,
+} from "react-icons/ti";
 
 type TUserData = {
 	id: number;
@@ -19,7 +27,7 @@ type TUserData = {
 	dob: string;
 };
 
-const BasicTable = () => {
+const BasicTable3 = () => {
 	// =========== STATIC DATA FETCHING WITH USEMEMO ==========
 	const data = useMemo(() => staticData, []);
 	// console.log(data);
@@ -30,6 +38,7 @@ const BasicTable = () => {
 			{
 				header: "ID",
 				accessorKey: "id",
+				enableSorting: false,
 			},
 			{
 				header: "First Name",
@@ -46,6 +55,8 @@ const BasicTable = () => {
 			{
 				header: "Gender",
 				accessorKey: "gender",
+				enableSorting: false,
+				enableColumnFilter: false,
 			},
 			{
 				header: "Date of Birth",
@@ -61,6 +72,9 @@ const BasicTable = () => {
 
 	// ==================== STATE INITIALIZED =======================
 	const [filtering, setFiltering] = useState<string>("");
+	const [sorting, setSorting] = useState<SortingState>([
+		{ id: "dob", desc: false },
+	]);
 
 	// =================== TABLE FUNCTIONALITIES =========
 	const dataTable = useReactTable({
@@ -69,10 +83,13 @@ const BasicTable = () => {
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
+		getSortedRowModel: getSortedRowModel(),
 		state: {
 			globalFilter: filtering,
+			sorting: sorting,
 		},
 		onGlobalFilterChange: setFiltering,
+		onSortingChange: setSorting,
 	});
 
 	// console.log(dataTable);
@@ -97,11 +114,31 @@ const BasicTable = () => {
 					{dataTable.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>
 							{headerGroup.headers.map((header) => (
-								<th key={header.id} className="py-2 text-blue-800">
-									{flexRender(
-										header.column.columnDef.header,
-										header.getContext()
-									)}
+								<th
+									key={header.id}
+									onClick={
+										header.column.getCanSort()
+											? header.column.getToggleSortingHandler()
+											: undefined
+									}
+									className={`py-2 text-blue-800 ${
+										header.column.getCanSort() ? "cursor-pointer" : ""
+									}`}
+								>
+									{header.isPlaceholder
+										? null
+										: flexRender(
+												header.column.columnDef.header,
+												header.getContext()
+										  )}
+									{header.column.getCanSort() &&
+										(header.column.getIsSorted() === "asc" ? (
+											<TiArrowSortedUp className="inline" />
+										) : header.column.getIsSorted() === "desc" ? (
+											<TiArrowSortedDown className="inline" />
+										) : (
+											<TiArrowUnsorted className="inline" />
+										))}
 								</th>
 							))}
 						</tr>
@@ -131,37 +168,16 @@ const BasicTable = () => {
 					>
 						Prev
 					</button>
-					<button
-						onClick={() => dataTable.setPageIndex(0)}
-						className="px-3 py-1.5 mx-1 rounded border border-blue-400"
-					>
-						1
-					</button>
-					<button
-						onClick={() => dataTable.setPageIndex(1)}
-						className="px-3 py-1.5 mx-1 rounded border border-blue-400"
-					>
-						2
-					</button>
-					<button
-						onClick={() => dataTable.setPageIndex(2)}
-						className="px-3 py-1.5 mx-1 rounded border border-blue-400"
-					>
-						3
-					</button>
-					<span className="text-blue-400">. . . .</span>
-					<button
-						onClick={() => dataTable.setPageIndex(dataTable.getPageCount() - 2)}
-						className="px-3 py-1.5 mx-1 rounded border border-blue-400"
-					>
-						{dataTable.getPageCount() - 1}
-					</button>
-					<button
-						onClick={() => dataTable.setPageIndex(dataTable.getPageCount() - 1)}
-						className="px-3 py-1.5 mx-1 rounded border border-blue-400"
-					>
-						{dataTable.getPageCount()}
-					</button>
+					{[...Array(dataTable.getPageCount()).keys()].map((pageIndex) => (
+						<button
+							key={pageIndex}
+							onClick={() => dataTable.setPageIndex(pageIndex)}
+							className="px-3 py-1.5 mx-1 rounded border border-blue-400"
+						>
+							{pageIndex + 1}
+						</button>
+					))}
+
 					<button
 						onClick={() => dataTable.nextPage()}
 						disabled={!dataTable.getCanNextPage()}
@@ -175,4 +191,4 @@ const BasicTable = () => {
 	);
 };
 
-export default BasicTable;
+export default BasicTable3;

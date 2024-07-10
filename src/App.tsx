@@ -1,16 +1,14 @@
-// import BasicTable from "./components/BasicTable";
-// import TaskTable from "./components/basicTable1/TaskTable";
-
-import BasicTable from "./components/basicTable2/BasicTable";
+import BasicTable2 from "./components/basicTable2/BasicTable2";
+import BasicTable from "./components/basicTable2/BasicTable2";
+import BasicTable3 from "./components/basicTable3/BasicTable3";
 
 const App = () => {
 	return (
-		<div>
-			React Table
-			{/* <BasicTable /> */}
-			{/* <TaskTable /> */}
+		<>
 			<BasicTable />
-		</div>
+			<BasicTable2 />
+			<BasicTable3 />
+		</>
 	);
 };
 

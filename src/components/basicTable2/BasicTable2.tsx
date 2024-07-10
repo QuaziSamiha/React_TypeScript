@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useMemo, useState } from "react";
 import staticData from "../../MOCK_DATA.json";
 import {
@@ -6,6 +7,8 @@ import {
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
+	getSortedRowModel,
+	SortingState,
 	useReactTable,
 } from "@tanstack/react-table";
 import { DateTime } from "luxon";
@@ -19,7 +22,7 @@ type TUserData = {
 	dob: string;
 };
 
-const BasicTable = () => {
+const BasicTable2 = () => {
 	// =========== STATIC DATA FETCHING WITH USEMEMO ==========
 	const data = useMemo(() => staticData, []);
 	// console.log(data);
@@ -61,6 +64,7 @@ const BasicTable = () => {
 
 	// ==================== STATE INITIALIZED =======================
 	const [filtering, setFiltering] = useState<string>("");
+	const [sorting, setSorting] = useState<SortingState>([]);
 
 	// =================== TABLE FUNCTIONALITIES =========
 	const dataTable = useReactTable({
@@ -69,10 +73,13 @@ const BasicTable = () => {
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
+		getSortedRowModel: getSortedRowModel(),
 		state: {
 			globalFilter: filtering,
+			sorting: sorting,
 		},
 		onGlobalFilterChange: setFiltering,
+		onSortingChange: setSorting,
 	});
 
 	// console.log(dataTable);
@@ -97,11 +104,19 @@ const BasicTable = () => {
 					{dataTable.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>
 							{headerGroup.headers.map((header) => (
-								<th key={header.id} className="py-2 text-blue-800">
-									{flexRender(
-										header.column.columnDef.header,
-										header.getContext()
-									)}
+								<th
+									key={header.id}
+									onClick={header.column.getToggleSortingHandler()}
+									className="py-2 text-blue-800"
+								>
+									{header.isPlaceholder
+										? null
+										: flexRender(
+												header.column.columnDef.header,
+												header.getContext()
+										  )}
+									{header.column.getCanSort() &&
+										(header.column.getIsSorted() === "asc" ? " 🔼" : " 🔽")}
 								</th>
 							))}
 						</tr>
@@ -175,4 +190,4 @@ const BasicTable = () => {
 	);
 };
 
-export default BasicTable;
+export default BasicTable2;
