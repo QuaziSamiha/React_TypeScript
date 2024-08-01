@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useMemo, useState } from "react";
-import staticData from "../../MOCK_DATA.json";
+import staticData from "../../../MOCK_DATA.json";
 import {
 	ColumnDef,
 	flexRender,

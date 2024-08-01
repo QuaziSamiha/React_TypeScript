@@ -1,5 +1,6 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useMemo, useState } from "react";
-import staticData from "../../MOCK_DATA.json";
+import staticData from "../../../MOCK_DATA2.json";
 import {
 	ColumnDef,
 	flexRender,
@@ -15,14 +16,14 @@ type TUserData = {
 	first_name: string;
 	last_name: string;
 	email: string;
+	phone: string;
 	gender: string;
 	dob: string;
 };
 
-const BasicTable = () => {
+const BasicTableOne = () => {
 	// =========== STATIC DATA FETCHING WITH USEMEMO ==========
 	const data = useMemo(() => staticData, []);
-	// console.log(data);
 
 	// =================== COLUMNS DEFINITION ================
 	const tableColumns = useMemo<ColumnDef<TUserData>[]>(
@@ -32,16 +33,30 @@ const BasicTable = () => {
 				accessorKey: "id",
 			},
 			{
-				header: "First Name",
-				accessorKey: "first_name",
+				header: "Name",
+				columns: [
+					{
+						header: "First Name",
+						accessorKey: "first_name",
+					},
+					{
+						header: "Last Name",
+						accessorKey: "last_name",
+					},
+				],
 			},
 			{
-				header: "Last Name",
-				accessorKey: "last_name",
-			},
-			{
-				header: "Email",
-				accessorKey: "email",
+				header: "Contact Info",
+				columns: [
+					{
+						header: "Email",
+						accessorKey: "email",
+					},
+					{
+						header: "Phone",
+						accessorKey: "phone",
+					},
+				],
 			},
 			{
 				header: "Gender",
@@ -63,7 +78,7 @@ const BasicTable = () => {
 	const [filtering, setFiltering] = useState<string>("");
 
 	// =================== TABLE FUNCTIONALITIES =========
-	const dataTable = useReactTable({
+	const dataTable = useReactTable<TUserData>({
 		data,
 		columns: tableColumns,
 		getCoreRowModel: getCoreRowModel(),
@@ -93,15 +108,21 @@ const BasicTable = () => {
 			</div>
 			<table className="table-auto w-full border border-blue-500 my-4">
 				{/* ====================== TABLE HEADER =========== */}
-				<thead className="">
+				<thead>
 					{dataTable.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>
 							{headerGroup.headers.map((header) => (
-								<th key={header.id} className="py-2 text-blue-800">
-									{flexRender(
-										header.column.columnDef.header,
-										header.getContext()
-									)}
+								<th
+									key={header.id}
+									colSpan={header.colSpan}
+									className="py-2 text-blue-800 border border-blue-500"
+								>
+									{header.isPlaceholder
+										? null
+										: flexRender(
+												header.column.columnDef.header,
+												header.getContext()
+										  )}
 								</th>
 							))}
 						</tr>
@@ -110,9 +131,12 @@ const BasicTable = () => {
 				{/* ====================== TABLE BODY =========== */}
 				<tbody>
 					{dataTable.getRowModel().rows.map((row) => (
-						<tr key={row.id} className="border-y border-blue-500">
+						<tr key={row.id}>
 							{row.getVisibleCells().map((cell) => (
-								<td key={cell.id} className="text-center text-gray-500 py-2">
+								<td
+									key={cell.id}
+									className="text-center text-gray-500 py-2 border border-blue-500"
+								>
 									{flexRender(cell.column.columnDef.cell, cell.getContext())}
 								</td>
 							))}
@@ -127,7 +151,7 @@ const BasicTable = () => {
 					<button
 						onClick={() => dataTable.previousPage()}
 						disabled={!dataTable.getCanPreviousPage()}
-						className="px-3 py-1.5 mx-1 rounded border border-blue-400"
+						className="px-3 py-1.5 mx-1 rounded border border-blue-400 disabled:cursor-not-allowed disabled:text-gray-400"
 					>
 						Prev
 					</button>
@@ -165,7 +189,7 @@ const BasicTable = () => {
 					<button
 						onClick={() => dataTable.nextPage()}
 						disabled={!dataTable.getCanNextPage()}
-						className="px-3 py-1.5 mx-1 rounded border border-blue-400"
+						className="px-3 py-1.5 mx-1 rounded border border-blue-400 disabled:cursor-not-allowed disabled:text-gray-400"
 					>
 						Next
 					</button>
@@ -175,4 +199,4 @@ const BasicTable = () => {
 	);
 };
 
-export default BasicTable;
+export default BasicTableOne;
