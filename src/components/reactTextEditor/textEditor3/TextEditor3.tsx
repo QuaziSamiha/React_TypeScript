@@ -1,7 +1,6 @@
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import "./style.css";
 const modules = {
 	toolbar: [
 		[{ size: [] }],
@@ -21,9 +20,9 @@ const TextEditor3 = () => {
 	console.log(value);
 	return (
 		<>
-			<section className="container p-4 my-8">
+			<section className="container p-4 my-16 w-full">
 				<h1>React Text Editor: </h1>
-				<div className="flex gap-6">
+				<div className="flex gap-6 w-full">
 					<div className="flex items-center justify-center">
 						<div>
 							<h1>Editor</h1>
@@ -44,12 +43,8 @@ const TextEditor3 = () => {
 					</div>
 				</div>
 				{}
-				<div
-					dangerouslySetInnerHTML={{ __html: value }}
-					className="my-48"
-				></div>
 
-				<ol>
+				{/* <ol className="mt-12">
 					<li>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit,{" "}
 						<strong>
@@ -67,9 +62,9 @@ const TextEditor3 = () => {
 							sunt in culpa qui officia deserunt mollit anim id est laborum.
 						</span>
 					</li>
-				</ol>
+				</ol> */}
 
-				<ul>
+				{/* <ul className="my-12">
 					<li>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit,{" "}
 						<strong>
@@ -87,7 +82,7 @@ const TextEditor3 = () => {
 							sunt in culpa qui officia deserunt mollit anim id est laborum.
 						</span>
 					</li>
-				</ul>
+				</ul> */}
 			</section>
 		</>
 	);
